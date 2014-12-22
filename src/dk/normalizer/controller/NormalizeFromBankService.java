@@ -6,6 +6,7 @@
 package dk.normalizer.controller;
 
 import com.google.gson.Gson;
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
 import dk.normalizer.dto.LoanResponseDTO;
@@ -25,6 +26,8 @@ public class NormalizeFromBankService
     {
         gson = new Gson();
         
+        
+        
         HashMap<String,Object> objects = Receive.setUpReceiver();
         
         QueueingConsumer consumer = (QueueingConsumer) objects.get("consumer");
@@ -36,16 +39,20 @@ public class NormalizeFromBankService
         {
           QueueingConsumer.Delivery delivery = consumer.nextDelivery();
           String message = new String(delivery.getBody());
+          
 //          AMQP.BasicProperties props = delivery.getProperties();
 //          AMQP.BasicProperties replyProps = new AMQP.BasicProperties.Builder().correlationId(props.getCorrelationId()).build();
 //          System.out.println(props.getCorrelationId());
 //          System.out.println(props.getReplyTo());
+            
+          System.out.println("Message: "+message);
           
           
+            loanResponseDTO = gson.fromJson(message, LoanResponseDTO.class);
+
+            System.out.println(loanResponseDTO.toString());
           
-//          loanResponseDTO = gson.fromJson(message, LoanResponseDTO.class);
           
-//          System.out.println(loanResponseDTO.toString());
           
 //          sendMessage();
 

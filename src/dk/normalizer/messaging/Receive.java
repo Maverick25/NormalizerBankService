@@ -19,7 +19,7 @@ import java.util.HashMap;
  */
 public class Receive 
 {
-    private static final String TASK_QUEUE_NAME = "queue_normalizerBankRabbit";
+    private static final String TASK_QUEUE_NAME = "queue_normalizerBankService";
     private static Connection connection;
     private static Channel channel;
     
@@ -31,7 +31,7 @@ public class Receive
         factory.setPassword("cph");
         connection = factory.newConnection();
         channel = connection.createChannel();
-
+        
         channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null);
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
